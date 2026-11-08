@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>DEMUSICAL — музыка без границ</title>
+  <meta name="description" content="DEMUSICAL — музыкальная социальная платформа">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="loginGate" class="gate hidden">
+    <div class="gate-card">
+      <div class="brand big"><span class="brand-mark">D</span><span>DEMUSICAL</span></div>
+      <p class="muted">Музыка, авторы и твоя собственная волна.</p>
+      <button id="discordBtn" class="discord-btn">Продолжить через Discord</button>
+      <div id="authError" class="auth-error"></div>
+    </div>
+  </div>
+
+  <div id="toastRoot" class="toast-root"></div>
+
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand"><span class="brand-mark">D</span><span>DEMUSICAL</span></div>
+      <nav>
+        <button class="nav-btn active" data-page="feed"><span>◉</span> Лента</button>
+        <button class="nav-btn" data-page="wave"><span>〰</span> Моя волна</button>
+        <button class="nav-btn" data-page="saved"><span>♡</span> Сохранённое</button>
+        <button class="nav-btn" data-page="publish"><span>＋</span> Опубликовать</button>
+        <button class="nav-btn" data-page="profile"><span>◎</span> Профиль</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <button id="themeBtn" class="small-btn">◐ Тема</button>
+        <button id="logoutBtn" class="small-btn">↪ Выйти</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <div class="eyebrow">MUSIC SOCIAL</div>
+          <h1 id="pageTitle">Лента</h1>
+        </div>
+        <div class="top-actions">
+          <div class="search">
+            <span>⌕</span><input id="searchInput" placeholder="Найти трек, автора..." autocomplete="off">
+          </div>
+          <div id="userChip" class="user-chip"></div>
+        </div>
+      </header>
+
+      <section id="page-feed" class="page active">
+        <div class="hero">
+          <div>
+            <div class="pill">● LIVE FEED</div>
+            <h2>Твоя музыка.<br><span>Твоя волна.</span></h2>
+            <p>Слушай новые релизы, сохраняй любимое и публикуй собственные треки.</p>
+          </div>
+          <button class="hero-btn" data-page-jump="publish">＋ Загрузить трек</button>
+        </div>
+        <div id="feedList" class="track-list"></div>
+      </section>
+
+      <section id="page-wave" class="page">
+        <div class="section-head"><div><div class="eyebrow">PERSONAL RADIO</div><h2>Моя волна</h2></div></div>
+        <div id="waveList" class="track-list"></div>
+      </section>
+
+      <section id="page-saved" class="page">
+        <div class="section-head"><div><div class="eyebrow">YOUR LIBRARY</div><h2>Сохранённое</h2></div></div>
+        <div id="savedList" class="track-list"></div>
+      </section>
+
+      <section id="page-publish" class="page">
+        <div class="publish-card">
+          <div class="eyebrow">NEW RELEASE</div>
+          <h2>Опубликовать трек</h2>
+          <p class="muted">MP3, WAV, OGG, M4A. Обложка необязательна.</p>
+          <form id="publishForm">
+            <div class="form-grid">
+              <label>Название<input id="titleInput" required maxlength="120" placeholder="Например: Neon Rain"></label>
+              <label>Исполнитель<input id="artistInput" maxlength="120" placeholder="Твоё имя / псевдоним"></label>
+            </div>
+            <label>Описание<textarea id="descriptionInput" maxlength="500" placeholder="Расскажи о треке..."></textarea></label>
+            <div class="drop-grid">
+              <label class="drop"><span class="drop-icon">♫</span><b>Аудиофайл</b><small id="audioName">Нажми, чтобы выбрать</small><input id="audioInput" type="file" accept="audio/*" required></label>
+              <label class="drop"><span class="drop-icon">▧</span><b>Обложка</b><small id="coverName">PNG / JPG / WEBP</small><input id="coverInput" type="file" accept="image/png,image/jpeg,image/webp"></label>
+            </div>
+            <button id="publishBtn" class="primary-btn" type="submit">Опубликовать</button>
+            <div id="uploadStatus" class="upload-status"></div>
+          </form>
+        </div>
+      </section>
+
+      <section id="page-profile" class="page">
+        <div class="profile-card">
+          <div id="profileBanner" class="profile-banner"></div>
+          <div class="profile-body">
+            <div id="profileAvatar" class="profile-avatar">D</div>
+            <div class="profile-info"><h2 id="profileName">Пользователь</h2><p id="profileEmail" class="muted"></p></div>
+          </div>
+          <div class="profile-form">
+            <label>Отображаемое имя<input id="displayNameInput" maxlength="60"></label>
+            <label>Аватар URL<input id="avatarUrlInput" placeholder="https://..."></label>
+            <label>Баннер URL<input id="bannerUrlInput" placeholder="https://..."></label>
+            <button id="saveProfileBtn" class="primary-btn">Сохранить профиль</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <audio id="audioPlayer" preload="metadata"></audio>
+  <div id="playerBar" class="player hidden">
+    <div class="now"><div id="nowCover" class="now-cover">♫</div><div><b id="nowTitle">—</b><small id="nowArtist">—</small></div></div>
+    <button id="prevBtn" class="player-btn">‹</button>
+    <button id="playBtn" class="play-btn">▶</button>
+    <button id="nextBtn" class="player-btn">›</button>
+    <div class="progress"><span id="timeCurrent">0:00</span><input id="seekBar" type="range" min="0" max="100" value="0"><span id="timeTotal">0:00</span></div>
+    <button id="muteBtn" class="player-btn">◖</button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="app.js"></script>
+</body>
+</html>
